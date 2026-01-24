@@ -5,6 +5,10 @@ import { USER_ROLE } from "../../interface/types";
 
 const router = express.Router();
 
-router.get("/", auth(USER_ROLE.admin), getAuditLogs);
+router.get(
+  "/",
+  // auth(USER_ROLE.admin),
+  getAuditLogs,
+);
 
 export default router;
