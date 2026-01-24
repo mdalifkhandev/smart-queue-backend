@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import { IStaff } from './staff.interface';
 
 const staffSchema = new mongoose.Schema({
     name: { type: String, required: true },
@@ -7,4 +8,4 @@ const staffSchema = new mongoose.Schema({
     availabilityStatus: { type: String, enum: ['Available', 'On Leave'], default: 'Available' },
 }, { timestamps: true });
 
-export default mongoose.model('Staff', staffSchema);
+export default mongoose.model<IStaff>('Staff', staffSchema);
