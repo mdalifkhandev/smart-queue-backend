@@ -1,9 +1,10 @@
-import express from 'express';
-import { getLogs } from './auditLog.controller';
-import { protect } from '../../middleware/authMiddleware';
+import express from "express";
+import { getAuditLogs } from "./auditLog.controller";
+import auth from "../../middleware/auth";
+import { USER_ROLE } from "../../interface/types";
 
 const router = express.Router();
 
-router.get('/', protect, getLogs);
+router.get("/", auth(USER_ROLE.admin), getAuditLogs);
 
 export default router;
