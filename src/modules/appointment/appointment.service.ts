@@ -65,6 +65,7 @@ export class AppointmentService {
         staff: staffId,
         appointmentDate: startDate.toDate(),
         status: "Scheduled",
+        queuePosition: todayCount + 1,
       });
 
       await AuditLog.create({
@@ -161,7 +162,7 @@ export class AppointmentService {
 
     eligibleApp.staff = staffId;
     eligibleApp.status = "Scheduled";
-    eligibleApp.queuePosition = null;
+    eligibleApp.queuePosition = todayCount + 1;
     await eligibleApp.save();
 
     const remainingQueue: any[] = await Appointment.find({

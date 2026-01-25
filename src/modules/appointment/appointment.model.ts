@@ -16,7 +16,7 @@ const appointmentSchema = new mongoose.Schema(
       enum: ["Scheduled", "Completed", "Cancelled", "No-Show", "Waiting"],
       default: "Scheduled",
     },
-    queuePosition: { type: Number, default: null }, // Only for status: 'Waiting'
+    queuePosition: { type: Number, default: 0 }, // 0 for Scheduled/Completed, >0 for Waiting
   },
   { timestamps: true },
 );
