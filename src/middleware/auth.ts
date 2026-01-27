@@ -14,23 +14,27 @@ const auth = (...requiredRoles: TUser_Role[]) => {
       throw new AppError(httpStatus.UNAUTHORIZED, "You are unauthorized!");
     }
 
+    // Strip 'Bearer ' prefix if present
+    const cleanToken = token.startsWith('Bearer ') ? token.slice(7) : token;
+
     // Check if the token is valid
     const jwtSecret = process.env.JWT_SECRET as string;
     let decoded;
     try {
-      decoded = jwt.verify(token, jwtSecret) as JwtPayload;
+      decoded = jwt.verify(cleanToken, jwtSecret) as JwtPayload;
     } catch (err) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Unauthorized!");
     }
 
-    const { email, role, exp } = decoded;
+    const { id, email, role, exp } = decoded;
 
     // Check if token properly expired (though verify does this, checking exp manually is extra but fine)
     if (exp && Date.now() >= exp * 1000) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Token expired!");
     }
 
-    const user = await User.findOne({ email });
+    // Prefer id if present (our JWT signs {id}); fallback to email
+    const user = await User.findById(id).select("-password") || await User.findOne({ email });
 
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, "This user is not found!");
@@ -41,11 +45,11 @@ const auth = (...requiredRoles: TUser_Role[]) => {
       throw new AppError(httpStatus.FORBIDDEN, "This user is deleted!");
     }
 
-    if (requiredRoles && !requiredRoles.includes(role)) {
+    if (requiredRoles && !requiredRoles.includes((user as any).role)) {
       throw new AppError(httpStatus.FORBIDDEN, "You are not authorized!");
     }
 
-    req.user = decoded as JwtPayload;
+    req.user = user;
     next();
   });
 };

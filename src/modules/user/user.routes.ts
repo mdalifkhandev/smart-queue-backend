@@ -10,6 +10,10 @@ router.post(
   validateRequest(userValidationSchema.register),
   registerUser,
 );
-router.post("/login", validateRequest(userValidationSchema.login), loginUser);
+router.post(
+  "/login",
+  validateRequest(userValidationSchema.login),
+  loginUser,
+);
 
 export default router;
