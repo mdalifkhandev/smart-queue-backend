@@ -8,25 +8,16 @@ import router from "./routes";
 
 dotenv.config();
 
+if (!process.env.JWT_SECRET) {
+  throw new Error("JWT_SECRET must be set in environment variables");
+}
+
 const app = express();
 
 app.use(express.json());
-const allowedOrigins = [
-  "http://localhost:3000",
-  "http://127.0.0.1:3000",
-  "https://lone-clain.vercel.app",
-  "https://lone-frontend.vercel.app",
-];
-
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: true,
     credentials: true,
   }),
 );
