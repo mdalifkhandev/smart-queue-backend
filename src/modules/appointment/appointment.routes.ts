@@ -31,7 +31,7 @@ router.put(
 );
 router.post(
   "/assign-queue",
-  auth(USER_ROLE.admin, USER_ROLE.staff),
+  // auth(USER_ROLE.admin, USER_ROLE.staff),
   validateRequest(appointmentValidationSchema.assignQueue),
   assignFromQueue,
 );
