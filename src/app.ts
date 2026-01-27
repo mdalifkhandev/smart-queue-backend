@@ -24,11 +24,11 @@ app.use(
 
 app.use(cookieParser());
 
-app.use("/api/v1", router);
-
-app.get("/", (req: Request, res: Response) => {
-  res.send("hello world");
+app.get('/', (_req: Request, res: Response) => {
+  res.send('Backend is running');
 });
+
+app.use("/api/v1", router);
 
 app.use(globalError);
 app.use(notFound);
