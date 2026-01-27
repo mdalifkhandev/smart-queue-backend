@@ -37,7 +37,6 @@ const auth = (...requiredRoles: TUser_Role[]) => {
     }
 
     // Check if user is already deleted
-    // Assuming 'isDeleted' property exists on User model as per user request
     if (user.isDeleted) {
       throw new AppError(httpStatus.FORBIDDEN, "This user is deleted!");
     }
