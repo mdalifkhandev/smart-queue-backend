@@ -13,4 +13,5 @@ class AppError extends Error {
   }
 }
 
+// export error
 export default AppError;
